@@ -1,6 +1,5 @@
 package StockTracker.controller;
 
-
 import StockTracker.entity.Stock;
 import StockTracker.entity.Transaction;
 import StockTracker.service.StockService;

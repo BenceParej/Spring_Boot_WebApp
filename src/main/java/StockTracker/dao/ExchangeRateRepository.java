@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Date;
 
-public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Date> {
+public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Integer> {
 }

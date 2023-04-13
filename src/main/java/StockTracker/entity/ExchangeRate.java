@@ -10,28 +10,34 @@ import java.sql.Date;
 public class ExchangeRate {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer exchangeRateId;
+
     @Column(name="date")
     private Date dateOfRecorded;
-
-
-    private Currency baseCurrency;
 
     @Column(name="base_amount")
     private Double baseAmount;
 
-
-    private Currency destCurrency;
     @Column(name="destination_amount")
     private Double destAmount;
 
     public ExchangeRate(){}
 
-    public ExchangeRate(Date dateOfRecorded, Currency baseCurrency, Double baseAmount, Currency destCurrency, Double destAmount) {
+
+    public ExchangeRate(Date dateOfRecorded, Double baseAmount, Double destAmount) {
         this.dateOfRecorded = dateOfRecorded;
-        this.baseCurrency = baseCurrency;
         this.baseAmount = baseAmount;
-        this.destCurrency = destCurrency;
         this.destAmount = destAmount;
+    }
+
+    public Integer getExchangeRateId() {
+        return exchangeRateId;
+    }
+
+    public void setExchangeRateId(Integer exchangeRateId) {
+        this.exchangeRateId = exchangeRateId;
     }
 
     public Date getDateOfRecorded() {
@@ -42,28 +48,12 @@ public class ExchangeRate {
         this.dateOfRecorded = dateOfRecorded;
     }
 
-    public Currency getBaseCurrency() {
-        return baseCurrency;
-    }
-
-    public void setBaseCurrency(Currency baseCurrency) {
-        this.baseCurrency = baseCurrency;
-    }
-
     public Double getBaseAmount() {
         return baseAmount;
     }
 
     public void setBaseAmount(Double baseAmount) {
         this.baseAmount = baseAmount;
-    }
-
-    public Currency getDestCurrency() {
-        return destCurrency;
-    }
-
-    public void setDestCurrency(Currency destCurrency) {
-        this.destCurrency = destCurrency;
     }
 
     public Double getDestAmount() {
@@ -78,9 +68,9 @@ public class ExchangeRate {
     public String toString() {
         return "ExchangeRate{" +
                 "dateOfRecorded=" + dateOfRecorded +
-                ", baseCurrency=" + baseCurrency +
+                ", baseCurrency="  +
                 ", baseAmount=" + baseAmount +
-                ", destCurrency=" + destCurrency +
+                ", destCurrency="  +
                 ", destAmount=" + destAmount +
                 '}';
     }

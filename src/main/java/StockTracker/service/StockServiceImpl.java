@@ -2,6 +2,7 @@ package StockTracker.service;
 
 import StockTracker.dao.StockRepository;
 import StockTracker.entity.Stock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class StockServiceImpl implements StockService{
 
     private StockRepository stockRepository;
 
+    @Autowired
     public StockServiceImpl(StockRepository theStockRepository){
         stockRepository=theStockRepository;
     }

@@ -64,12 +64,18 @@ public class Currency {
         this.destinationCurrencies = destinationCurrencies;
     }
 
-    public void addExchangeRate (ExchangeRate tempCurrency, boolean isBase){
+    public void addExchangeRate (ExchangeRate tempExchange, boolean isBase){
         if (isBase){
-            baseCurrencies.add(tempCurrency);
+            if(baseCurrencies==null){
+                baseCurrencies = new ArrayList<>();
+            }
+            baseCurrencies.add(tempExchange);
         }
         else{
-            destinationCurrencies.add(tempCurrency);
+            if(destinationCurrencies==null){
+                destinationCurrencies = new ArrayList<>();
+            }
+            destinationCurrencies.add(tempExchange);
         }
     }
 
