@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>ExchangeRates</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>ExchangeRate Directory</h3>
+    <hr>
+
+    <a th:href="@{/exchangerates/addExchangeRate}"
+       class="btn btn-primary btn-sm mb-3">
+        Add ExchangeRate
+    </a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Base Currency</th>
+            <th>Base Amount</th>
+            <th>Quantity</th>
+            <th>Destination Currency</th>
+            <th>Destination Amount</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="theExchangeRate : ${exchangerates}">
+
+            <td th:text="${theExchangeRate.dateOfRecorded}" />
+            <td th:text="${theExchangeRate.baseCurrency.currencyName}" />
+            <td th:text="${theExchangeRate.baseAmount}" />
+            <td th:text="${theExchangeRate.quantityExchange}" />
+            <td text="USD"/>
+<!--            <td th:text="${theExchangeRate.destinationCurrency.currencyName}" />-->
+            <td th:text="${theExchangeRate.destAmount}" />
+
+<!--            <td>
+                <a th:href="@{/stocks/updateStockForm(stockId=${theStock.id})}"
+                   class="btn btn-primary">
+                    Update
+                </a>
+                <a th:href="@{/stocks/delete(stockId=${theStock.id})}"
+                   class="btn btn-primary">
+                    Delete
+                </a>
+                <a th:href="@{/stocks/listTransactions(stockId=${theStock.id})}"
+                   class="btn btn-primary">
+                    See Transactions
+                </a>
+            </td>-->
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
