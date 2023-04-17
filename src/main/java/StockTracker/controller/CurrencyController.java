@@ -9,10 +9,7 @@ import StockTracker.service.ExchangeRateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.CallableStatement;
 import java.util.Calendar;
@@ -49,12 +46,12 @@ public class CurrencyController {
         currencyService.save(theCurrency);
 
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        ExchangeRate exchangeRate=new ExchangeRate(date, 122.1,3002.1);
+        ExchangeRate exchangeRate=new ExchangeRate(date, 122.1,2);
         exchangeRateService.save(exchangeRate);
-        theCurrency.addExchangeRate(exchangeRate,true);
+        theCurrency.addToExchangeRate(exchangeRate,true);
         currencyService.save(theCurrency);
         Currency anotherCurrency = currencyService.findById(2);
-        anotherCurrency.addExchangeRate(exchangeRate,false);
+        anotherCurrency.addToExchangeRate(exchangeRate,false);
 
 
         currencyService.save(anotherCurrency);
@@ -62,6 +59,11 @@ public class CurrencyController {
          return "redirect:/currencies/list";
     }
 
+    //Delete attribute mappings
+    @GetMapping("/delete")
+    public String deleteStock(@RequestParam("currencyId") int theId){
+        currencyService.deleteById(theId);
 
-
+        return "redirect:/currencies/list";
+    }
 }

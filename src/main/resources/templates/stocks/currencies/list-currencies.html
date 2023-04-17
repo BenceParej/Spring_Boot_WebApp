@@ -24,16 +24,22 @@
         <thead class="table-dark">
         <tr>
             <th>Available Currencies</th>
+            <th></th>
         </tr>
-        </thead>
 
+        </thead>
         <tbody>
         <tr th:each="theCurrency : ${currencies}">
 
-            <td th:text="${theCurrency.currencyName}" />
-
+            <td th:text="${theCurrency.currencyName}" /></td>
+            <td>
+                <a th:href="@{/currencies/delete(currencyId=${theCurrency.currencyID})}" class="btn btn-primary">
+                Delete
+                </a>
             </td>
+
         </tr>
+
         </tbody>
     </table>
 </body>

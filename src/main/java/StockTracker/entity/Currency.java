@@ -18,12 +18,12 @@ public class Currency {
     @Column(name="currency_name")
     private String currencyName;
 
-    @OneToMany(fetch= FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinColumn(name="base_currency_id")
+    @OneToMany(fetch= FetchType.LAZY, cascade = {CascadeType.ALL},
+            mappedBy="baseCurrency")
     private List<ExchangeRate> baseCurrencies;
 
-    @OneToMany(fetch= FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinColumn(name="destination_currency_id")
+    @OneToMany(fetch= FetchType.LAZY, cascade = {CascadeType.ALL},
+            mappedBy = "destinationCurrency")
     private List<ExchangeRate> destinationCurrencies;
 
     public Currency(){}
@@ -64,7 +64,7 @@ public class Currency {
         this.destinationCurrencies = destinationCurrencies;
     }
 
-    public void addExchangeRate (ExchangeRate tempExchange, boolean isBase){
+    public void addToExchangeRate (ExchangeRate tempExchange, boolean isBase){
         if (isBase){
             if(baseCurrencies==null){
                 baseCurrencies = new ArrayList<>();

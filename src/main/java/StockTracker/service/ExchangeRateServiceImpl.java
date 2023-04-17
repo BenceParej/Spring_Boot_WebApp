@@ -5,6 +5,8 @@ import StockTracker.entity.ExchangeRate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExchangeRateServiceImpl implements ExchangeRateService{
 
@@ -18,5 +20,10 @@ public class ExchangeRateServiceImpl implements ExchangeRateService{
     @Override
     public void save(ExchangeRate exchangeRate) {
         exchangeRateRepository.save(exchangeRate);
+    }
+
+    @Override
+    public List<ExchangeRate> findAll() {
+        return exchangeRateRepository.findAll();
     }
 }
