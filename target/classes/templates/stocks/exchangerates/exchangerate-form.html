@@ -32,11 +32,10 @@
             <input type="date" th:field="*{dateOfRecorded}" class="form-control" id="date">
         </div>
         <select class="form-control" id="baseCurrencyID" name="baseCurrencyID">
-            <option value="0">Select Base Currency</option>
-            <option th:each="basecurrency : ${currencies}" th:value="${basecurrency.currencyID}"
-                    th:text="${basecurrency.currencyName} "
+            <option value="0">Select Destination Currency</option>
+            <option th:each="bascurrency : ${currencies}" th:value="${bascurrency.currencyID}"
+                    th:text="${bascurrency.currencyName}"
             ></option>
-<!--            th:selected="${exchangerate.baseCurrency.currencyName !=null ? currency.currencyName==exchangerate.baseCurrency.currencyName}"-->
         </select>
         <div class="mb-3">
             <label for="baseamount" class="form-label">Funded in Base:</label>
@@ -51,12 +50,7 @@
             <option th:each="destcurrency : ${currencies}" th:value="${destcurrency.currencyID}"
                     th:text="${destcurrency.currencyName}"
             ></option>
-<!--            th:selected="{currency.currencyName==exchangerate.destinationCurrency.currencyName"-->
         </select>
-        <div class="mb-3">
-            <label for="destamount" class="form-label">Funded in Destination:</label>
-            <input type="text" th:field="*{destAmount}" class="form-control" id="destamount">
-        </div>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 </div>

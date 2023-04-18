@@ -30,8 +30,6 @@ public class ExchangeRateController {
     @GetMapping("/list")
     public String listExchangeRates(Model theModel){
         List<ExchangeRate> exchangeRates = exchangeRateService.findAll();
-        ExchangeRate emptyExchangeRate = new ExchangeRate();
-
         theModel.addAttribute("exchangerates",exchangeRates);
         return ("exchangerates/list-exchangerates");
     }
@@ -49,12 +47,15 @@ public class ExchangeRateController {
 
     @PostMapping("/saveExchangeRate")
     public String saveExchangerate(@ModelAttribute("exchangerate") ExchangeRate exchangeRate,
-                                   @RequestParam("baseCurrencyID") int theId){
+                                   @RequestParam("destCurrencyID") int theDestId,
+                                   @RequestParam("baseCurrencyID") int theBaseId){
 
-        System.out.println(theId);
+       exchangeRate.setBaseCurrency(currencyService.findById(theBaseId));
+       exchangeRate.setDestinationCurrency(currencyService.findById(theDestId));
 
+       exchangeRateService.save(exchangeRate);
 
-        return "exchangerates/exchangerate-form";
+        return "redirect:/exchangerates/list";
     }
 
 

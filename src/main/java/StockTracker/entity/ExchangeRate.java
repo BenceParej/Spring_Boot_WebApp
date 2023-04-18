@@ -50,10 +50,13 @@ public class ExchangeRate {
 
     public Currency getDestinationCurrency() {
         return destinationCurrency;
+
     }
 
     public void setDestinationCurrency(Currency destinationCurrency) {
         this.destinationCurrency = destinationCurrency;
+        calculateDestinationAmount();
+
     }
 
     public void setBaseCurrency(Currency baseCurrency) {
@@ -100,10 +103,10 @@ public class ExchangeRate {
         this.destAmount = destAmount;
     }
 
-    public void calculateDestinationAmount(Integer quantity){
+    private void calculateDestinationAmount(){
         // this function calculates the destination amount with the given currencies
         //TODO: here needed an api call to get the actual currencies exchange rates
-        destAmount=quantity*(baseAmount*(360/1));
+        destAmount=quantityExchange*(baseAmount*(360/1));
     }
 
     @Override
