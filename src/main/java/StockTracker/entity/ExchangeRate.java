@@ -1,9 +1,19 @@
 package StockTracker.entity;
 
+import com.baeldung.soap.ws.client.generated.MNBArfolyamServiceSoap;
+import com.baeldung.soap.ws.client.generated.MNBArfolyamServiceSoapImpl;
 import jakarta.persistence.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 import java.sql.Date;
+import java.text.DecimalFormat;
 
 @Entity
 @Table(name="exchangerate")
@@ -55,8 +65,7 @@ public class ExchangeRate {
 
     public void setDestinationCurrency(Currency destinationCurrency) {
         this.destinationCurrency = destinationCurrency;
-        calculateDestinationAmount();
-
+        PopulateWithMNBData();
     }
 
     public void setBaseCurrency(Currency baseCurrency) {
@@ -103,12 +112,6 @@ public class ExchangeRate {
         this.destAmount = destAmount;
     }
 
-    private void calculateDestinationAmount(){
-        // this function calculates the destination amount with the given currencies
-        //TODO: here needed an api call to get the actual currencies exchange rates
-        destAmount=quantityExchange*(baseAmount*(360/1));
-    }
-
     @Override
     public String toString() {
         return "ExchangeRate{" +
@@ -119,4 +122,49 @@ public class ExchangeRate {
                 ", destAmount=" + destAmount +
                 '}';
     }
+
+    public void PopulateWithMNBData(){
+
+        MNBArfolyamServiceSoapImpl impl = new MNBArfolyamServiceSoapImpl();
+        MNBArfolyamServiceSoap service = impl.getCustomBindingMNBArfolyamServiceSoap();
+        try {
+            String resp = service.getExchangeRates(dateOfRecorded.toString(), dateOfRecorded.toString(),
+                    baseCurrency.getCurrencyName()+","+destinationCurrency.getCurrencyName());
+            System.out.println(resp);
+
+            Double rate=parseXml(resp);
+            setDestAmount(baseAmount*quantityExchange*(1/rate));
+
+        } catch (Exception e) {
+            System.err.print(e);
+        }
+    }
+
+    public Double parseXml(String xmlString) throws Exception {
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        Document doc = factory.newDocumentBuilder().parse(new ByteArrayInputStream(xmlString.getBytes()));
+
+        Element root = doc.getDocumentElement();
+        NodeList dayNodes = root.getElementsByTagName("Day");
+        if (dayNodes.getLength() == 0) {
+            throw new Exception("No Day element found");
+        }
+
+        Element day = (Element) dayNodes.item(0);
+        NodeList rateNodes = day.getElementsByTagName("Rate");
+        if (rateNodes.getLength() == 0) {
+            throw new Exception("No Rate element found");
+        }
+
+        Element rate = (Element) rateNodes.item(0);
+        String rateString = rate.getTextContent().replace(",", ".");
+        return Double.parseDouble(rateString);
+    }
+
+
+
 }
+
+
+
