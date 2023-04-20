@@ -1,7 +1,9 @@
 package StockTracker.service;
 
 import StockTracker.dao.StockRepository;
+import StockTracker.dao.TransactionRepository;
 import StockTracker.entity.Stock;
+import StockTracker.entity.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,11 @@ import java.util.Optional;
 public class StockServiceImpl implements StockService{
 
     private StockRepository stockRepository;
-
+    private TransactionRepository transactionRepository;
     @Autowired
-    public StockServiceImpl(StockRepository theStockRepository){
+    public StockServiceImpl(StockRepository theStockRepository, TransactionRepository theTransactionRepository){
         stockRepository=theStockRepository;
+        transactionRepository=theTransactionRepository;
     }
 
     @Override
@@ -47,4 +50,19 @@ public class StockServiceImpl implements StockService{
     public void deleteById(int theId) {
         stockRepository.deleteById(theId);
     }
+
+    @Override
+    public Double countQuantityForStockId(int theId) {
+        List<Transaction> transactions = transactionRepository.findAllByStock_Id(theId);
+        Double num=0.;
+        for(Transaction t : transactions){
+            num += t.getExchangeRate().getQuantityExchange();
+        }
+        return num;
+    }
+
+
+
+
+
 }

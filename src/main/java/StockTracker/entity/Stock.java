@@ -23,10 +23,9 @@ public class Stock {
     @Column(name="quantity")
     private int stockQuantity;
 
-    @OneToMany(fetch= FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinColumn(name="stock_id")
+    @OneToMany(fetch= FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy="stock")
     private List<Transaction> transactions;
-    //CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH
+
 
     public Stock(){};
 

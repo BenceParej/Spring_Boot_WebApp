@@ -1,13 +1,17 @@
 package StockTracker.controller;
 
+import StockTracker.entity.Currency;
 import StockTracker.entity.Stock;
 import StockTracker.entity.Transaction;
+import StockTracker.service.CurrencyService;
 import StockTracker.service.StockService;
+import org.glassfish.jaxb.core.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -15,9 +19,12 @@ import java.util.List;
 public class StockController {
 
     private StockService stockService;
-
+    private CurrencyService currencyService;
     @Autowired
-    public StockController(StockService theStockService){this.stockService=theStockService;}
+    public StockController(StockService theStockService, CurrencyService theCurrencyService){
+        this.stockService=theStockService;
+        this.currencyService=theCurrencyService;
+    }
 
     //Listing mappings
     @GetMapping("/list")
@@ -25,25 +32,14 @@ public class StockController {
 
         //get stocks from the db
         List<Stock> stocks = stockService.findAll();
+        List<Double> stocknums = new ArrayList<>();
+        for (Stock stock : stocks) {
+            stocknums.add(stockService.countQuantityForStockId(stock.getId()));
+        }
         //add them to the spring model
         theModel.addAttribute("stocks",stocks);
-
+        theModel.addAttribute("stocknums",stocknums);
         return "stocks/list-stocks";
-    }
-
-    @GetMapping("/listTransactions")
-    public String listTransactions(@RequestParam("stockId") int theId, Model theModel){
-
-        //find the stock with ID
-        Stock tempStock = stockService.findById(theId);
-
-        //get the list of transactions
-        List<Transaction> theTransactions= tempStock.getTransactions();
-
-        //add them to the spring model
-        theModel.addAttribute("transactions",theTransactions);
-        theModel.addAttribute("stock",tempStock);
-        return "stocks/list-transactions";
     }
 
 
@@ -56,21 +52,6 @@ public class StockController {
         return "stocks/stock-form";
     }
 
-    @GetMapping("/addTransaction")
-    public String addTransaction(@RequestParam("stockId") int theId, Model theModel){
-
-        Stock tempStock = stockService.findById(theId);
-        Transaction tempTransaction = new Transaction();
-
-        //itt létre kell majd hozni a exchange rate objektumot
-
-        //add them to the spring model
-        theModel.addAttribute("stock",tempStock);
-        theModel.addAttribute("transaction",tempTransaction);
-
-        return "stocks/transaction-form";
-    }
-
     //Save attribute mappings
     @PostMapping("/save")
     public String saveStock(@ModelAttribute("stock") Stock theStock){
@@ -78,20 +59,6 @@ public class StockController {
         stockService.save(theStock);
         //use a redirect to prevent duplicate submissions
         return "redirect:/stocks/list";
-    }
-
-    @PostMapping("/saveTransaction")
-    public String saveTransaction(@ModelAttribute("transaction") Transaction theTransaction,
-                                  @RequestParam("id") int theId){
-
-        Stock tempStock = stockService.findById(theId);
-        //save the transaction
-        tempStock.addTransaction(theTransaction);
-
-        stockService.save(tempStock);
-        //use a redirect to prevent duplicate submissions
-        String returnPath ="redirect:/stocks/listTransactions?stockId=" + tempStock.getId();
-        return (returnPath);
     }
 
     //Update attribute mappings
@@ -108,7 +75,6 @@ public class StockController {
         return "stocks/stock-form";
     }
 
-
     //Delete attribute mappings
     @GetMapping("/delete")
     public String deleteStock(@RequestParam("stockId") int theId){
@@ -116,9 +82,5 @@ public class StockController {
 
         return "redirect:/stocks/list";
     }
-
-
-
-
 
 }

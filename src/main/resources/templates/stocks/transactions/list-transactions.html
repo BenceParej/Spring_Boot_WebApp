@@ -20,7 +20,7 @@
   <hr>
 
   <input type="hidden" th:field="*{stock.id}">
-  <a th:href="@{/stocks/addTransaction(stockId=${stock.id})}"
+  <a th:href="@{/transactions/addTransaction(stockId=${stock.id})}"
      class="btn btn-primary btn-sm mb-3">
     Add Transaction
   </a>
@@ -29,13 +29,13 @@
     <thead class="table-dark">
     <tr>
       <th>Transaction ID</th>
-      <th>Quantity</th>
+      <th>Stock Name</th>
       <th>Broker</th>
       <th>Date</th>
-      <th>Base Currency</th>
+      <th>Quantity</th>
+      <th>Stock Currency</th>
       <th>Amount funded</th>
-      <th>Destination Currency</th>
-      <th>Amount funded</th>
+      <th>Fee</th>
       <th>Action</th>
     </tr>
     </thead>
@@ -44,13 +44,13 @@
     <tr th:each="theTransaction : ${transactions}">
 
       <td th:text="${theTransaction.transactionId}" />
-      <td th:text="${theTransaction.transactionQuantity}" />
+      <td th:text="${stock.name}" aria-disabled="true" />
       <td th:text="${theTransaction.broker}" />
-      <td th:text="${theTransaction.dateOfBuy}" />
-      <td th:text="${theTransaction.baseCurrencyId}" />
-      <td th:text="${theTransaction.fundedBase}" />
-      <td th:text="${theTransaction.destinationCurrencyId}" />
-      <td th:text="${theTransaction.fundedDestination}" />
+      <td th:text="${theTransaction.exchangeRate.dateOfRecorded}" />
+      <td th:text="${theTransaction.exchangeRate.quantityExchange}" />
+      <td th:text="${theTransaction.exchangeRate.destinationCurrency.getCurrencyName()}" />
+      <td th:text="${theTransaction.exchangeRate.destAmount}" />
+      <td th:text="${theTransaction.fee}" />
       <td>
 <!--        <a th:href="@{}"
            class="btn btn-primary">

@@ -15,4 +15,6 @@ public interface StockService {
 
     void deleteById(int theId);
 
+
+    Double countQuantityForStockId(int theId);
 }

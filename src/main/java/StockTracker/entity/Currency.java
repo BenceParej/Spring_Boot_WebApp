@@ -27,8 +27,7 @@ public class Currency {
     private List<ExchangeRate> destinationCurrencies;
 
     public Currency(){}
-    public Currency(Integer currencyID, String currencyName) {
-        this.currencyID = currencyID;
+    public Currency(String currencyName) {
         this.currencyName = currencyName;
     }
 

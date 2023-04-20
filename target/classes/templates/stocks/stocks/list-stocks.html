@@ -35,11 +35,10 @@
         </thead>
 
         <tbody>
-        <tr th:each="theStock : ${stocks}">
-
+        <tr th:each="theStock, indexStat : ${stocks}">
             <td th:text="${theStock.name}" />
             <td th:text="${theStock.isin}" />
-            <td th:text="${theStock.stockQuantity}" />
+            <td th:text="${stocknums[__${indexStat.index}__]}" />
             <td>
                 <a th:href="@{/stocks/updateStockForm(stockId=${theStock.id})}"
                    class="btn btn-primary">
@@ -49,7 +48,7 @@
                    class="btn btn-primary">
                     Delete
                 </a>
-                <a th:href="@{/stocks/listTransactions(stockId=${theStock.id})}"
+                <a th:href="@{/transactions/listTransactions(stockId=${theStock.id})}"
                    class="btn btn-primary">
                     See Transactions
                 </a>

@@ -31,7 +31,7 @@ public class ExchangeRate {
     private Double baseAmount;
 
     @Column(name="quantity")
-    private Integer quantityExchange;
+    private Double quantityExchange;
 
     @Column(name="destination_amount")
     private Double destAmount;
@@ -44,11 +44,13 @@ public class ExchangeRate {
     @JoinColumn(name="destination_currency_id")
     private Currency destinationCurrency;
 
+    @OneToOne(mappedBy = "exchangeRate")
+    private Transaction transaction;
 
     public ExchangeRate(){}
 
 
-    public ExchangeRate(Date dateOfRecorded, Double baseAmount, Integer quantity) {
+    public ExchangeRate(Date dateOfRecorded, Double baseAmount, Double quantity) {
         this.dateOfRecorded = dateOfRecorded;
         this.baseAmount = baseAmount;
         this.quantityExchange=quantity;
@@ -96,11 +98,11 @@ public class ExchangeRate {
         this.baseAmount = baseAmount;
     }
 
-    public Integer getQuantityExchange() {
+    public Double getQuantityExchange() {
         return quantityExchange;
     }
 
-    public void setQuantityExchange(Integer quantityExchange) {
+    public void setQuantityExchange(Double quantityExchange) {
         this.quantityExchange = quantityExchange;
     }
 

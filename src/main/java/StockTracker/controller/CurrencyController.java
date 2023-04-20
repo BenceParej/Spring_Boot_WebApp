@@ -46,7 +46,7 @@ public class CurrencyController {
         currencyService.save(theCurrency);
 
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        ExchangeRate exchangeRate=new ExchangeRate(date, 122.1,2);
+        ExchangeRate exchangeRate=new ExchangeRate(date, 122.1,2.);
         exchangeRateService.save(exchangeRate);
         theCurrency.addToExchangeRate(exchangeRate,true);
         currencyService.save(theCurrency);

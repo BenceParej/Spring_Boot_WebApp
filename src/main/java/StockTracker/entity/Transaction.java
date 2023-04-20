@@ -1,9 +1,6 @@
 package StockTracker.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.sql.Date;
 
@@ -18,41 +15,45 @@ public class Transaction {
     @Column(name="stock_name")
     private String stockName;
 
-    @Column(name="quantity")
-    private Integer transactionQuantity;
-
     @Column(name="broker")
     private String broker;
 
-    @Column(name="date")
-    private Date dateOfBuy;
+    @Column(name="fee")
+    private Double fee;
 
-    @Column(name="base_currency_id")
-    private Integer baseCurrencyId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="exchange_id")
+    private ExchangeRate exchangeRate;
 
-    @Column(name="funded_base")
-    private Double fundedBase;
+    @ManyToOne ( cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name="stock_id")
+    private Stock stock;
 
-    @Column(name="destination_currency_id")
-    private Integer destinationCurrencyId;
-
-    @Column(name="funded_destination")
-    private Double fundedDestination;
 
     public Transaction(){};
 
-    public Transaction(String transactionId, String stockName, Integer quantity, String broker,
-                       Date dateOfBuy, Integer baseCurrencyId, Double fundedBase, Integer destinationCurrencyId,
-                       Double fundedDestination) {
+
+    public Transaction(String transactionId, String stockName, String broker, Double fee) {
         this.transactionId = transactionId;
         this.stockName = stockName;
-        this.transactionQuantity = quantity;
         this.broker = broker;
-        this.dateOfBuy = dateOfBuy;
-        this.baseCurrencyId = baseCurrencyId;
-        this.fundedBase = fundedBase;
-        this.destinationCurrencyId = destinationCurrencyId;
-        this.fundedDestination = fundedDestination;
+        this.fee = fee;
+    }
+
+    public Double getFee() {
+        return fee;
+    }
+
+    public void setFee(Double fee) {
+        this.fee = fee;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 
     public String getTransactionId() {
@@ -71,14 +72,6 @@ public class Transaction {
         this.stockName = stockName;
     }
 
-    public Integer getTransactionQuantity() {
-        return transactionQuantity;
-    }
-
-    public void setTransactionQuantity(Integer transactionQuantity) {
-        this.transactionQuantity = transactionQuantity;
-    }
-
     public String getBroker() {
         return broker;
     }
@@ -87,44 +80,12 @@ public class Transaction {
         this.broker = broker;
     }
 
-    public Date getDateOfBuy() {
-        return dateOfBuy;
+    public ExchangeRate getExchangeRate() {
+        return exchangeRate;
     }
 
-    public void setDateOfBuy(Date dateOfBuy) {
-        this.dateOfBuy = dateOfBuy;
-    }
-
-    public Integer getBaseCurrencyId() {
-        return baseCurrencyId;
-    }
-
-    public void setBaseCurrencyId(Integer baseCurrencyId) {
-        this.baseCurrencyId = baseCurrencyId;
-    }
-
-    public Double getFundedBase() {
-        return fundedBase;
-    }
-
-    public void setFundedBase(Double fundedBase) {
-        this.fundedBase = fundedBase;
-    }
-
-    public Integer getDestinationCurrencyId() {
-        return destinationCurrencyId;
-    }
-
-    public void setDestinationCurrencyId(Integer destinationCurrencyId) {
-        this.destinationCurrencyId = destinationCurrencyId;
-    }
-
-    public Double getFundedDestination() {
-        return fundedDestination;
-    }
-
-    public void setFundedDestination(Double fundedDestination) {
-        this.fundedDestination = fundedDestination;
+    public void setExchangeRate(ExchangeRate exchangeRate) {
+        this.exchangeRate = exchangeRate;
     }
 
     @Override
@@ -132,13 +93,9 @@ public class Transaction {
         return "Transaction{" +
                 "transactionId='" + transactionId + '\'' +
                 ", stockName='" + stockName + '\'' +
-                ", transactionQuantity=" + transactionQuantity +
                 ", broker='" + broker + '\'' +
-                ", dateOfBuy=" + dateOfBuy +
-                ", baseCurrencyId=" + baseCurrencyId +
-                ", fundedBase=" + fundedBase +
-                ", destinationCurrencyId=" + destinationCurrencyId +
-                ", fundedDestination=" + fundedDestination +
+                ", exchangeRate=" + exchangeRate +
+                ", stock=" + stock +
                 '}';
     }
 }
