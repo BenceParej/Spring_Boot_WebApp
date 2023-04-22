@@ -28,6 +28,9 @@ public class ClosedTransaction {
     @Column(name = "closing_fee")
     private Double closeFee;
 
+    @Column(name="close_rate")
+    private Double closeRate;
+
     @Column(name = "tax_fee")
     private Double taxFee;
 
@@ -48,6 +51,9 @@ public class ClosedTransaction {
 
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
+
+        this.positionOpenAmount=transaction.getExchangeRate().getBaseAmount(); //HUF-ban van
+        this.openFee=transaction.getExchangeRate().getRate()*transaction.getFee(); //HUF-ban van
     }
 
     public Double getPositionOpenAmount() {
@@ -104,5 +110,13 @@ public class ClosedTransaction {
 
     public void setTaxFee(Double taxFee) {
         this.taxFee = taxFee;
+    }
+
+    public Double getCloseRate() {
+        return closeRate;
+    }
+
+    public void setCloseRate(Double closeRate) {
+        this.closeRate = closeRate;
     }
 }

@@ -39,6 +39,9 @@ public class ExchangeRate {
     @Column(name="destination_amount")
     private Double destAmount;
 
+    @Column(name="rate")
+    private Double rate;
+
     @ManyToOne
     @JoinColumn(name="base_currency_id")
     private Currency baseCurrency;
@@ -68,6 +71,13 @@ public class ExchangeRate {
     }
 
 
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
 
     public void setDestinationCurrency(Currency destinationCurrency) {
         this.destinationCurrency = destinationCurrency;
@@ -153,7 +163,7 @@ public class ExchangeRate {
                     destinationCurrency.getCurrencyName()+","+baseCurrency.getCurrencyName());
             System.out.println(resp);
 
-            Double rate=parseXml(resp);
+            this.rate=parseXml(resp);
              return destAmount*rate;
 
         } catch (Exception e) {
