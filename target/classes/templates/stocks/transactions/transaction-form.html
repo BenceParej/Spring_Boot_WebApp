@@ -18,45 +18,41 @@
   <h3>Add transaction to Stock</h3>
   <hr>
 
-  <form action="#" th:action=@{/transactions/saveTransaction} th:object="${transaction}" method="POST">
+  <form action="#" th:action=@{/transactions/saveTransaction}  method="POST">
 
     <!-- Add hidden form field to handle the update-->
     <input type="hidden" th:field="${stock.id}">
 
     <div class="mb-3">
       <label for="transactionId" class="form-label">Transaction ID:</label>
-      <input type="text" th:field="*{transactionId}" class="form-control" id="transactionId">
+      <input type="text" th:field="${transaction.transactionId}" class="form-control" id="transactionId">
     </div>
-    <div class="mb-3">
+    <div class="mb-3" >
       <label for="stockName" class="form-label">Stock Name:</label>
-      <input type="text" th:field="*{stock.name}"  class="form-control" id="stockName">
+      <input type="text" th:field="*{stock.name}"  class="form-control" id="stockName" th:readonly="true">
     </div>
 
     <div class="mb-3">
       <label for="broker" class="form-label">Broker:</label>
-      <input type="text" th:field="*{broker}" class="form-control" id="broker">
+      <input type="text" th:field="${transaction.broker}" class="form-control" id="broker">
     </div>
 
     <div class="mb-3">
       <label for="date" class="form-label">Date:</label>
-      <input type="date" th:field="*{exchangeRate.dateOfRecorded}" class="form-control" id="date">
+      <input type="date" th:field="${exchangeRate.dateOfRecorded}" class="form-control" id="date">
     </div>
 
-    <select class="form-control" id="baseCurrencyID" name="baseCurrencyID">
-      <option value="0">Select Destination Currency</option>
+    <select class="form-control" id="baseCurrencyID" name="baseCurrencyID"
+            th:selected="1">
+      <option value="0">Select Base Currency</option>
       <option th:each="bascurrency : ${currencies}" th:value="${bascurrency.currencyID}"
               th:text="${bascurrency.currencyName}"
       ></option>
     </select>
 
     <div class="mb-3">
-      <label for="baseamount" class="form-label">Funded in Base:</label>
-      <input type="text" th:field="*{exchangeRate.baseAmount}" class="form-control" id="baseamount">
-    </div>
-
-    <div class="mb-3">
       <label for="destinationId" class="form-label">Quantity:</label>
-      <input type="text" th:field="*{exchangeRate.quantityExchange}" class="form-control" id="destinationId">
+      <input type="text" th:field="${exchangeRate.quantityExchange}" class="form-control" id="destinationId">
     </div>
 
     <select class="form-control" id="destCurrencyID" name="destCurrencyID">
@@ -67,8 +63,13 @@
     </select>
 
     <div class="mb-3">
+      <label for="destamount" class="form-label">Stock Price:</label>
+      <input type="text" th:field="${exchangeRate.stockPrice}" class="form-control" id="destamount">
+    </div>
+
+    <div class="mb-3">
       <label for="fee" class="form-label">Fee amount:</label>
-      <input type="text" th:field="*{fee}" class="form-control" id="fee">
+      <input type="text" th:field="${transaction.fee}" class="form-control" id="fee">
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>

@@ -30,12 +30,15 @@ public class Transaction {
     private Stock stock;
 
 
+    @OneToOne(mappedBy = "transaction")
+    private ClosedTransaction closedTransaction;
+
+
     public Transaction(){};
 
 
-    public Transaction(String transactionId, String stockName, String broker, Double fee) {
+    public Transaction(String transactionId, String broker, Double fee) {
         this.transactionId = transactionId;
-        this.stockName = stockName;
         this.broker = broker;
         this.fee = fee;
     }
@@ -46,6 +49,14 @@ public class Transaction {
 
     public void setFee(Double fee) {
         this.fee = fee;
+    }
+
+    public ClosedTransaction getClosedTransaction() {
+        return closedTransaction;
+    }
+
+    public void setClosedTransaction(ClosedTransaction closedTransaction) {
+        this.closedTransaction = closedTransaction;
     }
 
     public Stock getStock() {
@@ -68,8 +79,8 @@ public class Transaction {
         return stockName;
     }
 
-    public void setStockName(String stockName) {
-        this.stockName = stockName;
+    public void setStockName(Stock stock) {
+        this.stockName = stock.getName();
     }
 
     public String getBroker() {
@@ -87,6 +98,8 @@ public class Transaction {
     public void setExchangeRate(ExchangeRate exchangeRate) {
         this.exchangeRate = exchangeRate;
     }
+
+
 
     @Override
     public String toString() {

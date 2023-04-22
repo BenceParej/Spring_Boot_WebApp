@@ -33,6 +33,9 @@ public class ExchangeRate {
     @Column(name="quantity")
     private Double quantityExchange;
 
+    @Column(name="stock_price")
+    private Double stockPrice;
+
     @Column(name="destination_amount")
     private Double destAmount;
 
@@ -49,11 +52,11 @@ public class ExchangeRate {
 
     public ExchangeRate(){}
 
-
-    public ExchangeRate(Date dateOfRecorded, Double baseAmount, Double quantity) {
+    public ExchangeRate(Date dateOfRecorded, Double quantityExchange, Double stockprice, Currency destinationCurrency) {
         this.dateOfRecorded = dateOfRecorded;
-        this.baseAmount = baseAmount;
-        this.quantityExchange=quantity;
+        this.quantityExchange = quantityExchange;
+        this.stockPrice = stockprice;
+        this.destinationCurrency = destinationCurrency;
     }
 
     public Currency getBaseCurrency() {
@@ -62,12 +65,12 @@ public class ExchangeRate {
 
     public Currency getDestinationCurrency() {
         return destinationCurrency;
-
     }
+
+
 
     public void setDestinationCurrency(Currency destinationCurrency) {
         this.destinationCurrency = destinationCurrency;
-        PopulateWithMNBData();
     }
 
     public void setBaseCurrency(Currency baseCurrency) {
@@ -94,8 +97,8 @@ public class ExchangeRate {
         return baseAmount;
     }
 
-    public void setBaseAmount(Double baseAmount) {
-        this.baseAmount = baseAmount;
+    public void setBaseAmount() {
+        baseAmount=PopulateWithMNBData();
     }
 
     public Double getQuantityExchange() {
@@ -110,8 +113,24 @@ public class ExchangeRate {
         return destAmount;
     }
 
-    public void setDestAmount(Double destAmount) {
-        this.destAmount = destAmount;
+    public void setDestAmount() {
+        this.destAmount = quantityExchange*stockPrice;
+    }
+
+    public Double getStockPrice() {
+        return stockPrice;
+    }
+
+    public void setStockPrice(Double stockPrice) {
+        this.stockPrice = stockPrice;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 
     @Override
@@ -125,21 +144,22 @@ public class ExchangeRate {
                 '}';
     }
 
-    public void PopulateWithMNBData(){
+    public Double PopulateWithMNBData(){
 
         MNBArfolyamServiceSoapImpl impl = new MNBArfolyamServiceSoapImpl();
         MNBArfolyamServiceSoap service = impl.getCustomBindingMNBArfolyamServiceSoap();
         try {
             String resp = service.getExchangeRates(dateOfRecorded.toString(), dateOfRecorded.toString(),
-                    baseCurrency.getCurrencyName()+","+destinationCurrency.getCurrencyName());
+                    destinationCurrency.getCurrencyName()+","+baseCurrency.getCurrencyName());
             System.out.println(resp);
 
             Double rate=parseXml(resp);
-            setDestAmount(baseAmount*quantityExchange*(1/rate));
+             return destAmount*rate;
 
         } catch (Exception e) {
             System.err.print(e);
         }
+        return null;
     }
 
     public Double parseXml(String xmlString) throws Exception {
@@ -163,8 +183,6 @@ public class ExchangeRate {
         String rateString = rate.getTextContent().replace(",", ".");
         return Double.parseDouble(rateString);
     }
-
-
 
 }
 

@@ -45,7 +45,7 @@ public class CurrencyController {
 
         currencyService.save(theCurrency);
 
-        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+/*        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         ExchangeRate exchangeRate=new ExchangeRate(date, 122.1,2.);
         exchangeRateService.save(exchangeRate);
         theCurrency.addToExchangeRate(exchangeRate,true);
@@ -54,7 +54,7 @@ public class CurrencyController {
         anotherCurrency.addToExchangeRate(exchangeRate,false);
 
 
-        currencyService.save(anotherCurrency);
+        currencyService.save(anotherCurrency);*/
 
          return "redirect:/currencies/list";
     }

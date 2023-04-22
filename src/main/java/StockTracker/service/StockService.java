@@ -11,10 +11,9 @@ public interface StockService {
 
     Stock findById(int theId);
 
-    Stock save(Stock theCurrency);
+    Stock save(Stock theStock);
 
     void deleteById(int theId);
-
 
     Double countQuantityForStockId(int theId);
 }
