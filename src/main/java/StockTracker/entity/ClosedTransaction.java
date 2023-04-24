@@ -9,91 +9,45 @@ public class ClosedTransaction {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @OneToOne
-    @JoinColumn(name = "transaction")
-    private Transaction transaction;
+    @JoinColumn(name = "open_exchange_id")
+    private ExchangeRate openExchangeRate;
 
-    @Column(name = "position_open_amount")
-    private Double positionOpenAmount;
-    @Column(name = "open_fee")
-    private Double openFee;
-    @Column(name = "closing_price")
-    private Double closeStockPrice;
-    @Column(name = "close_quantity")
-    private Double closeQuantity;
-    @Column(name = "position_closed_amount")
-    private Double positionClosedAmount;
+    @OneToOne
+    @JoinColumn(name = "close_exchange_id")
+    private ExchangeRate closeExchangeRate;
+
     @Column(name = "closing_fee")
     private Double closeFee;
 
-    @Column(name="close_rate")
-    private Double closeRate;
 
     @Column(name = "tax_fee")
     private Double taxFee;
 
     public ClosedTransaction(){}
 
-    public ClosedTransaction(Double positionOpenAmount, Double openFee, Double closeStockPrice, Double closeQuantity, Double positionClosedAmount, Double closeFee) {
-        this.positionOpenAmount = positionOpenAmount;
-        this.openFee = openFee;
-        this.closeStockPrice = closeStockPrice;
-        this.closeQuantity = closeQuantity;
-        this.positionClosedAmount = positionClosedAmount;
+    public ClosedTransaction(ExchangeRate openExchange,Double closeFee) {
         this.closeFee = closeFee;
+        this.openExchangeRate=openExchange;
+        this.closeExchangeRate=new ExchangeRate();
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public ExchangeRate getOpenExchangeRate() {
+        return openExchangeRate;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-
-        this.positionOpenAmount=transaction.getExchangeRate().getBaseAmount(); //HUF-ban van
-        this.openFee=transaction.getExchangeRate().getRate()*transaction.getFee(); //HUF-ban van
+    public void setOpenExchangeRate(ExchangeRate openExchangeRate) {
+        this.openExchangeRate = openExchangeRate;
     }
 
-    public Double getPositionOpenAmount() {
-        return positionOpenAmount;
+    public ExchangeRate getCloseExchangeRate() {
+        return closeExchangeRate;
     }
 
-    public void setPositionOpenAmount(Double positionOpenAmount) {
-        this.positionOpenAmount = positionOpenAmount;
-    }
-
-    public Double getOpenFee() {
-        return openFee;
-    }
-
-    public void setOpenFee(Double openFee) {
-        this.openFee = openFee;
-    }
-
-    public Double getCloseStockPrice() {
-        return closeStockPrice;
-    }
-
-    public void setCloseStockPrice(Double closeStockPrice) {
-        this.closeStockPrice = closeStockPrice;
-    }
-
-    public Double getCloseQuantity() {
-        return closeQuantity;
-    }
-
-    public void setCloseQuantity(Double closeQuantity) {
-        this.closeQuantity = closeQuantity;
-    }
-
-    public Double getPositionClosedAmount() {
-        return positionClosedAmount;
-    }
-
-    public void setPositionClosedAmount(Double positionClosedAmount) {
-        this.positionClosedAmount = positionClosedAmount;
+    public void setCloseExchangeRate(ExchangeRate closeExchangeRate) {
+        this.closeExchangeRate = closeExchangeRate;
     }
 
     public Double getCloseFee() {
@@ -112,11 +66,16 @@ public class ClosedTransaction {
         this.taxFee = taxFee;
     }
 
-    public Double getCloseRate() {
-        return closeRate;
+    public Double calculateTaxFee(ExchangeRate openrate, ExchangeRate closerate){
+        //get openfee
+        Double openFee=openrate.getTransaction().getFee() * openrate.getRate();
+
+        Double closeFee = this.closeFee * closerate.getRate();
+
+        Double stockRevenue = openrate.getDestAmount() - closerate.getDestAmount();
+
+        return (stockRevenue-openFee-closeFee)*0.15;
     }
 
-    public void setCloseRate(Double closeRate) {
-        this.closeRate = closeRate;
-    }
+
 }

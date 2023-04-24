@@ -20,8 +20,6 @@ public class Stock {
     @Column(name="isin")
     private String isin;
 
-    @Column(name="quantity")
-    private int stockQuantity;
 
     @OneToMany(fetch= FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy="stock")
     private List<Transaction> transactions;
@@ -29,13 +27,10 @@ public class Stock {
 
     public Stock(){};
 
-    public Stock(String name, String isin, int quantity) {
+    public Stock(String name, String isin) {
         this.name = name;
         this.isin = isin;
-        this.stockQuantity = quantity;
     }
-
-
 
     public int getId() {
         return id;
@@ -61,14 +56,6 @@ public class Stock {
         this.isin = isin;
     }
 
-    public int getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(int stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-
     public void addTransaction (Transaction tempTransaction){
         if (transactions==null){
             transactions = new ArrayList<>();
@@ -91,20 +78,7 @@ public class Stock {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", isin='" + isin + '\'' +
-                ", stockQuantity=" + stockQuantity +
                 '}';
     }
-
-/*    @OneToMany(fetch=FetchType.LAZY,
-            cascade={CascadeType.ALL})
-    @JoinColumn(name="stock_id")
-    private List<Transaction> transactions;
-
-    public void add(Transaction tempTransaction){
-        if (transactions==null){
-            transactions=new ArrayList<>();
-        }
-        transactions.add(tempTransaction);
-    }*/
 
 }

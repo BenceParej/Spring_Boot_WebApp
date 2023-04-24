@@ -15,6 +15,8 @@ public class StockServiceImpl implements StockService{
 
     private StockRepository stockRepository;
     private TransactionRepository transactionRepository;
+
+    public StockServiceImpl(){}
     @Autowired
     public StockServiceImpl(StockRepository theStockRepository, TransactionRepository theTransactionRepository){
         stockRepository=theStockRepository;
@@ -60,6 +62,7 @@ public class StockServiceImpl implements StockService{
         }
         return num;
     }
+
 
 
 

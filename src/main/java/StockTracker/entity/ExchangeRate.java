@@ -53,13 +53,17 @@ public class ExchangeRate {
     @OneToOne(mappedBy = "exchangeRate")
     private Transaction transaction;
 
+    @OneToOne(mappedBy = "openExchangeRate")
+    private ClosedTransaction closedTransaction;
+
     public ExchangeRate(){}
 
-    public ExchangeRate(Date dateOfRecorded, Double quantityExchange, Double stockprice, Currency destinationCurrency) {
+    public ExchangeRate(Date dateOfRecorded, Double quantityExchange, Double stockprice, Currency baseCurrency) {
         this.dateOfRecorded = dateOfRecorded;
         this.quantityExchange = quantityExchange;
         this.stockPrice = stockprice;
-        this.destinationCurrency = destinationCurrency;
+        this.baseCurrency = baseCurrency;
+        setBaseAmount();
     }
 
     public Currency getBaseCurrency() {
@@ -69,7 +73,6 @@ public class ExchangeRate {
     public Currency getDestinationCurrency() {
         return destinationCurrency;
     }
-
 
     public Double getRate() {
         return rate;
@@ -108,7 +111,7 @@ public class ExchangeRate {
     }
 
     public void setBaseAmount() {
-        baseAmount=PopulateWithMNBData();
+            this.baseAmount = quantityExchange*stockPrice;
     }
 
     public Double getQuantityExchange() {
@@ -124,7 +127,7 @@ public class ExchangeRate {
     }
 
     public void setDestAmount() {
-        this.destAmount = quantityExchange*stockPrice;
+        destAmount=PopulateWithMNBData();
     }
 
     public Double getStockPrice() {
@@ -160,11 +163,11 @@ public class ExchangeRate {
         MNBArfolyamServiceSoap service = impl.getCustomBindingMNBArfolyamServiceSoap();
         try {
             String resp = service.getExchangeRates(dateOfRecorded.toString(), dateOfRecorded.toString(),
-                    destinationCurrency.getCurrencyName()+","+baseCurrency.getCurrencyName());
+                    baseCurrency.getCurrencyName()+","+destinationCurrency.getCurrencyName());
             System.out.println(resp);
 
-            this.rate=parseXml(resp);
-             return destAmount*rate;
+            rate=parseXml(resp);
+            return baseAmount*rate;
 
         } catch (Exception e) {
             System.err.print(e);

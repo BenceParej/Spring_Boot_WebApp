@@ -30,10 +30,6 @@ public class Transaction {
     private Stock stock;
 
 
-    @OneToOne(mappedBy = "transaction")
-    private ClosedTransaction closedTransaction;
-
-
     public Transaction(){};
 
 
@@ -49,14 +45,6 @@ public class Transaction {
 
     public void setFee(Double fee) {
         this.fee = fee;
-    }
-
-    public ClosedTransaction getClosedTransaction() {
-        return closedTransaction;
-    }
-
-    public void setClosedTransaction(ClosedTransaction closedTransaction) {
-        this.closedTransaction = closedTransaction;
     }
 
     public Stock getStock() {

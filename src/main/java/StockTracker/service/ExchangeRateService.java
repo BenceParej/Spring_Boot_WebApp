@@ -11,4 +11,6 @@ public interface ExchangeRateService {
 
 
     List<ExchangeRate> findAll();
+
+    ExchangeRate findById(int id);
 }

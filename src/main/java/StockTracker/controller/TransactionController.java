@@ -65,8 +65,8 @@ public class TransactionController {
         //populate Exchangerate object with MNB data
         theExchangeRate.setBaseCurrency(currencyService.findById(baseID));
         theExchangeRate.setDestinationCurrency(currencyService.findById(destID));
-        theExchangeRate.setDestAmount();
         theExchangeRate.setBaseAmount();
+        theExchangeRate.setDestAmount();
 
         //set exchangerate to the transaction
         theTransaction.setExchangeRate(theExchangeRate);
