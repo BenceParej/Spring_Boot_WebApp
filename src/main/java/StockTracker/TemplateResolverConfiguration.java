@@ -48,6 +48,7 @@ public class TemplateResolverConfiguration {
         return templateResolver;
     }
 
+
 /*    @Bean
     public ClassLoaderTemplateResolver thirdTemplateResolver() {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();

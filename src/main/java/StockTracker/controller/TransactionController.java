@@ -1,9 +1,6 @@
 package StockTracker.controller;
 
-import StockTracker.entity.Currency;
-import StockTracker.entity.ExchangeRate;
-import StockTracker.entity.Stock;
-import StockTracker.entity.Transaction;
+import StockTracker.entity.*;
 import StockTracker.service.CurrencyService;
 import StockTracker.service.ExchangeRateService;
 import StockTracker.service.StockService;
@@ -13,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 @Controller
@@ -96,6 +95,23 @@ public class TransactionController {
         theModel.addAttribute("currencies",currencies);
 
         return "transactions/transaction-form";
+    }
+
+    @GetMapping("/closeTransaction")
+    public String closeTransaction(@RequestParam("transactionId") String transactionId, Model model){
+
+        model.addAttribute("transactionid",transactionId);
+
+
+        ExchangeRate tempExchangerate = new ExchangeRate();
+
+        model.addAttribute("exchangerate", tempExchangerate);
+
+        ClosedTransaction closedTransaction = new ClosedTransaction();
+
+        model.addAttribute("closedtransaction", closedTransaction);
+
+        return ("transactions/closedtransaction-form");
     }
 
 }

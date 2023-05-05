@@ -60,7 +60,8 @@ public class ExchangeRateTest {
         closedTransaction.setOpenExchangeRate(openRate);
         closedTransaction.setCloseExchangeRate(closeRate);
 
-        closedTransaction.calculateTaxFee(openRate,closeRate);
+        closedTransaction.calculateTaxFee();
+
 
 
         //Transaction transaction = new Transaction("ID2123", "Tesla", "IBKR", miafasz);

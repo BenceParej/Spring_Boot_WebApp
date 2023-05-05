@@ -52,6 +52,7 @@ public class ExchangeRateController {
 
        exchangeRate.setBaseCurrency(currencyService.findById(theBaseId));
        exchangeRate.setDestinationCurrency(currencyService.findById(theDestId));
+       exchangeRate.setDestAmount();
 
        exchangeRateService.save(exchangeRate);
 

@@ -52,14 +52,10 @@
       <td th:text="${theTransaction.exchangeRate.destAmount}" />
       <td th:text="${theTransaction.fee}" />
       <td>
-<!--        <a th:href="@{}"
+        <a th:href="@{/transactions/closeTransaction(transactionId=${theTransaction.transactionId})}"
            class="btn btn-primary">
-          Update
+          Close
         </a>
-        <a th:href="@{}"
-           class="btn btn-primary">
-          Delete
-        </a>-->
       </td>
     </tr>
     </tbody>

@@ -6,5 +6,6 @@ public interface TransactionService {
 
     void save(Transaction tempTransaction);
 
+    Transaction findById(String id);
 
 }

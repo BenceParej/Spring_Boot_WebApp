@@ -66,13 +66,13 @@ public class ClosedTransaction {
         this.taxFee = taxFee;
     }
 
-    public Double calculateTaxFee(ExchangeRate openrate, ExchangeRate closerate){
+    public Double calculateTaxFee(){
         //get openfee
-        Double openFee=openrate.getTransaction().getFee() * openrate.getRate();
+        Double openFee=this.openExchangeRate.getTransaction().getFee() * this.openExchangeRate.getRate();
 
-        Double closeFee = this.closeFee * closerate.getRate();
+        Double closeFee = this.closeFee * this.closeExchangeRate.getRate();
 
-        Double stockRevenue = openrate.getDestAmount() - closerate.getDestAmount();
+        Double stockRevenue =this.openExchangeRate.getDestAmount() - this.closeExchangeRate.getDestAmount();
 
         return (stockRevenue-openFee-closeFee)*0.15;
     }
