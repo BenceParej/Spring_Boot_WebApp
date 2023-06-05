@@ -1,6 +1,7 @@
 package StockTracker.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -12,10 +13,12 @@ public class Currency {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonView(Views.Public.class)
     @Column(name="currency_id")
     private Integer currencyID;
 
     @Column(name="currency_name")
+    @JsonView(Views.Public.class)
     private String currencyName;
 
     @OneToMany(fetch= FetchType.LAZY, cascade = {CascadeType.ALL},
@@ -86,3 +89,4 @@ public class Currency {
                 '}';
     }
 }
+
